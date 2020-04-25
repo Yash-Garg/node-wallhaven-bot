@@ -9,6 +9,7 @@
   "author": "Yash-Garg",
   "license": "ISC",
   "dependencies": {
-    "node-telegram-bot-api": "^0.40.0"
+    "node-telegram-bot-api": "^0.40.0",
+    "telebot": "^1.3.0"
   }
 }
