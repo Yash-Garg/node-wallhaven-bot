@@ -48,7 +48,9 @@ const get_wall_using_id = async (query) => {
 //
 
 bot.onText(/^\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, 'This is a bot based on NodeJS and Wallhaven\'s API!', {
+    bot.sendMessage(msg.chat.id, 'This is a bot based on NodeJS and Wallhaven\'s API! \
+                                  Type /help to get a list of available commands.',
+    {
         reply_to_message_id: msg.message_id,
     });
 });
