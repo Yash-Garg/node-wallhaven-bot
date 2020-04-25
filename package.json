@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {},
   "author": "Yash-Garg",
-  "license": "ISC",
+  "license": "GPL",
   "dependencies": {
     "axios": "^0.19.2",
     "node-telegram-bot-api": "^0.40.0"
