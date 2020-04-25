@@ -8,7 +8,7 @@ const bot = new TelegramBot(config.TOKEN, { polling: true });
 var hosts = ['https://api.telegram.org', 'https://google.co.in'];
 const API_URL = "https://wallhaven.cc/api/v1/";
 const API_INDEX = "&apikey=" + config.API_WALLHAVEN;
-const WALL_URL = "https://wallhaven.cc/api/v1/w/"
+const WALL_URL = API_URL + "w/"
 
 const search = async (query) => {
     let args = query.split(" ");
@@ -106,7 +106,8 @@ bot.onText(/^\/help/, (msg) => {
         \n\n/search <keyword>: To get a wallpaper related to the keyword \
         \n\n/nsfw: To get a random NSFW image from Wallhaven.cc \
         \n\n/random: To get any random image from Wallhaven.cc \
-        \n\n/ping: To test the ping of the bot with telegram/google",
+        \n\n/ping: To test the ping of the bot with telegram/google \
+        \n\n/getwall <id>: Download the wallpaper using it's id ",
         {
             reply_to_message_id: msg.message_id,
         })
