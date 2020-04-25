@@ -39,12 +39,16 @@ const nsfw = async () => {
 //
 
 bot.onText(/^\/start/, (msg) => {
-    sendMessage(msg, 'This is a bot based on NodeJS and Wallhaven\'s API!');
+    bot.sendMessage(msg.chat.id, 'This is a bot based on NodeJS and Wallhaven\'s API!', {
+        reply_to_message_id: msg.message_id,
+    });
 });
 
 bot.onText(/^\/ping/, (msg) => {
     ping(hosts).then(function (delta) {
-        sendMessage(msg, 'Ping time was ' + String(delta) + ' ms.');
+        bot.sendMessage(msg.chat.id, 'Ping time was ' + String(delta) + ' ms.', {
+            reply_to_message_id: msg.message_id,
+        });
         console.log('Starting ping test. Ping time was ' + String(delta) + ' ms');
     }).catch(function (err) {
         console.error('Could not ping remote URL', err);
@@ -52,38 +56,38 @@ bot.onText(/^\/ping/, (msg) => {
 });
 
 bot.onText(/\/search (.+)/, async (msg, match) => {
-    const chatId = msg.chat.id;
     const resp = await search(match[1]);
     resp != "404"
-        ? bot.sendDocument(chatId, resp)
-        : bot.sendMessage(chatId, "Try again with some other keyword(s)");
+        ? bot.sendDocument(msg.chat.id, resp, {
+            reply_to_message_id: msg.message_id,
+        })
+        : bot.sendMessage(msg.chat.id, "Try again with some other keyword(s)", {
+            reply_to_message_id: msg.message_id,
+        });
 });
 
 bot.onText(/\/random/, async (msg) => {
-    const chatId = msg.chat.id;
     const resp = await random();
-    bot.sendDocument(chatId, resp);
+    bot.sendDocument(msg.chat.id, resp, {
+        reply_to_message_id: msg.message_id,
+    });
 });
 
 bot.onText(/\/nsfw/, async (msg) => {
-    const chatId = msg.chat.id;
     const resp = await nsfw();
-    bot.sendDocument(chatId, resp);
+    bot.sendDocument(msg.chat.id, resp, {
+        reply_to_message_id: msg.message_id,
+    });
 });
 
-
-//
-// F U N C T I O N S 
-//
-
-function sendMessage(msg, text, delay, callback) {
-    if (!delay) delay = 5000;
-    bot.sendMessage(msg.chat.id, text, {
-        reply_to_message_id: msg.message_id,
-        parse_mode: 'HTML'
-    })
-        .then((res) => {
-            if (callback) callback(res);
+bot.onText(/^\/help/, (msg) => {
+    bot.sendMessage(
+        msg.chat.id, "/help: To get this message \
+        \n\n/search <keyword>: To get a wallpaper related to the keyword \
+        \n\n/nsfw: To get a random NSFW image from Wallhaven.cc \
+        \n\n/random: To get any random image from Wallhaven.cc \
+        \n\n/ping: To test the ping of the bot with telegram/google",
+        {
+            reply_to_message_id: msg.message_id,
         })
-        .catch((ignored) => { });
-}
+});
