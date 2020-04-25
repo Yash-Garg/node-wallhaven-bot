@@ -11,16 +11,25 @@ const API_INDEX = "&apikey=" + config.API_WALLHAVEN;
 
 const search = async (query) => {
     let args = query.split(" ");
-    let q = "?q=" + args.join("+");
-    console.log(q);
-    let data = await axios.get(API_URL + q + API_INDEX);
-    console.log(data);
-    let resp = await data.data.data[1].path;
+    let q = "search?q=" + args.join("+");
+    let data = await axios.get(API_URL + q + "&sorting=random" + API_INDEX);
+    let resp = (await data.data.data[0]) ? data.data.data[0].path : "404";
     return resp;
 };
 
 const random = async () => {
     let data = await axios.get(API_URL + "search?sorting=random" + API_INDEX);
+    let resp = await data.data.data[1].path;
+    return resp;
+};
+
+const nsfw = async () => {
+    let data = await axios.get(
+        API_URL +
+        "search?sorting=random" +
+        "&purity=001" +
+        API_INDEX
+    );
     let resp = await data.data.data[1].path;
     return resp;
 };
@@ -55,6 +64,13 @@ bot.onText(/\/random/, async (msg) => {
     const resp = await random();
     bot.sendDocument(chatId, resp);
 });
+
+bot.onText(/\/nsfw/, async (msg) => {
+    const chatId = msg.chat.id;
+    const resp = await nsfw();
+    bot.sendDocument(chatId, resp);
+});
+
 
 //
 // F U N C T I O N S 
