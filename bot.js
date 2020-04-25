@@ -6,8 +6,8 @@ const axios = require('axios')
 const bot = new TelegramBot(config.TOKEN, { polling: true });
 
 var hosts = ['https://api.telegram.org', 'https://google.co.in'];
-
-const search = async () => {
+const API_URL = "https://wallhaven.cc/api/v1/search";
+const search = async (query) => {
     let args = query.split(" ");
     let q = "?q=" + args.join("+");
     console.log(q);
@@ -34,7 +34,7 @@ bot.onText(/^\/ping/, (msg) => {
     });
 });
 
-bot.on(/^\/search/, async(msg) => {
+bot.on(/^\/search/, async (msg) => {
     const chatId = msg.chat.id;
     const resp = await search(match[1]);
     console.log(resp);
