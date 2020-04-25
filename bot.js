@@ -8,6 +8,7 @@ const bot = new TelegramBot(config.TOKEN, { polling: true });
 var hosts = ['https://api.telegram.org', 'https://google.co.in'];
 const API_URL = "https://wallhaven.cc/api/v1/";
 const API_INDEX = "&apikey=" + config.API_WALLHAVEN;
+const WALL_URL = "https://wallhaven.cc/api/v1/w/"
 
 const search = async (query) => {
     let args = query.split(" ");
@@ -31,6 +32,14 @@ const nsfw = async () => {
         API_INDEX
     );
     let resp = await data.data.data[1].path;
+    return resp;
+};
+
+const get_wall_using_id = async (query) => {
+    let id = query.split(" ");
+    let data = await axios.get(WALL_URL + id + "?apikey=" + config.API_WALLHAVEN);
+    let resp = (await data.data.data) ? data.data.data.path : "404";
+    console.log(resp);
     return resp;
 };
 
@@ -78,6 +87,17 @@ bot.onText(/\/nsfw/, async (msg) => {
     bot.sendDocument(msg.chat.id, resp, {
         reply_to_message_id: msg.message_id,
     });
+});
+
+bot.onText(/\/getwall (.+)/, async (msg, match) => {
+    const resp = await get_wall_using_id(match[1]);
+    resp != "404"
+        ? bot.sendDocument(msg.chat.id, resp, {
+            reply_to_message_id: msg.message_id,
+        })
+        : bot.sendMessage(msg.chat.id, "Try using another wallpaper ID", {
+            reply_to_message_id: msg.message_id,
+        });
 });
 
 bot.onText(/^\/help/, (msg) => {
