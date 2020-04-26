@@ -160,7 +160,6 @@ bot.onText(/\/top (.+)/, async (msg, match) => {
             bot.sendDocument(msg.chat.id, resp[i], {
                 reply_to_message_id: msg.message_id,
             });
-            console.log()
         }
     }
 });
