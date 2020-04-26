@@ -3,6 +3,7 @@ const config = require('./config.js')
 const ping = require('./ping/ping.js');
 const axios = require('axios')
 
+init();
 const bot = new TelegramBot(config.TOKEN, { polling: true });
 
 var hosts = [`https://api.telegram.org', 'https://google.co.in`];
@@ -192,3 +193,10 @@ function sendUnauthorizedMessage(msg) {
         reply_to_message_id: msg.message_id,
     });
 }
+
+function init() {
+    if (config.TOKEN == undefined || config.API_WALLHAVEN == undefined || config.AUTH_USERS == undefined) {
+        console.log(new Error(`\n\nOne or more variables missing in config. Exiting..\n`));
+        process.exit(1);
+    }
+};
