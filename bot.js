@@ -111,6 +111,7 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await search(match[1]);
+        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
         bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
@@ -121,9 +122,7 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
                     }]
                 ]
             }
-        });
-        await sleep(3000);
-        bot.sendDocument(msg.chat.id, resp.path);
+        }).then(sendDoc);
     }
 });
 
@@ -132,6 +131,7 @@ bot.onText(/\/random/, async (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await random();
+        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
         bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
@@ -142,9 +142,7 @@ bot.onText(/\/random/, async (msg) => {
                     }]
                 ]
             }
-        });
-        await sleep(3000);
-        bot.sendDocument(msg.chat.id, resp.path);
+        }).then(sendDoc);
     }
 });
 
@@ -153,6 +151,7 @@ bot.onText(/\/nsfw/, async (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await nsfw();
+        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
         bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
@@ -163,9 +162,7 @@ bot.onText(/\/nsfw/, async (msg) => {
                     }]
                 ]
             }
-        });
-        await sleep(3000);
-        bot.sendDocument(msg.chat.id, resp.path);
+        }).then(sendDoc);
     }
 });
 
