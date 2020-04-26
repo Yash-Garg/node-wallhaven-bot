@@ -5,7 +5,9 @@ const ping = require('./ping/ping.js');
 const axios = require('axios')
 
 init();
-const bot = new TelegramBot(config.TOKEN, { polling: true });
+const bot = new TelegramBot(config.TOKEN, {
+    polling: true
+});
 
 var hosts = [`https://api.telegram.org', 'https://google.co.in`];
 const API_URL = `https://wallhaven.cc/api/v1/`;
@@ -18,24 +20,36 @@ const search = async (query) => {
     let response = await axios.get(
         `${API_URL}${q}&sorting=random${API_INDEX}`
     );
-    let data = (await response.data.data[0]) ? response.data.data[0].path : "404";
-    return data;
+    let path = await response.data.data[1].path;
+    let image = await response.data.data[1].thumbs.small;
+    return {
+        path: path,
+        image: image,
+    };
 };
 
 const random = async () => {
     let response = await axios.get(
         `${API_URL}search?sorting=random${API_INDEX}`
     );
-    let data = await response.data.data[1].path;
-    return data;
+    let path = await response.data.data[1].path;
+    let image = await response.data.data[1].thumbs.small;
+    return {
+        path: path,
+        image: image,
+    };
 };
 
 const nsfw = async () => {
     let response = await axios.get(
         `${API_URL}search?sorting=random&purity=001${API_INDEX}`
     );
-    let data = await response.data.data[1].path;
-    return data;
+    let path = await response.data.data[1].path;
+    let image = await response.data.data[1].thumbs.small;
+    return {
+        path: path,
+        image: image,
+    };
 };
 
 const get_wall_using_id = async (query) => {
@@ -65,10 +79,9 @@ bot.onText(/^\/start/, (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         bot.sendMessage(msg.chat.id, `Hello there! I am a bot based on NodeJS and Wallhaven\'s API!\
-        \nHit /help to get a list of available commands.`,
-            {
-                reply_to_message_id: msg.message_id,
-            });
+        \nHit /help to get a list of available commands.`, {
+            reply_to_message_id: msg.message_id,
+        });
     }
 });
 
@@ -92,13 +105,10 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await search(match[1]);
-        resp != `404`
-            ? bot.sendDocument(msg.chat.id, resp, {
-                reply_to_message_id: msg.message_id,
-            })
-            : bot.sendMessage(msg.chat.id, `Try again with some other keyword(s)`, {
-                reply_to_message_id: msg.message_id,
-            });
+        bot.sendPhoto(msg.chat.id, resp.image, {
+            reply_to_message_id: msg.message_id,
+        });
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
@@ -107,9 +117,10 @@ bot.onText(/\/random/, async (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await random();
-        bot.sendDocument(msg.chat.id, resp, {
+        bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
         });
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
@@ -118,9 +129,10 @@ bot.onText(/\/nsfw/, async (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await nsfw();
-        bot.sendDocument(msg.chat.id, resp, {
+        bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
         });
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
@@ -129,11 +141,11 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await get_wall_using_id(match[1]);
-        resp != `404`
-            ? bot.sendDocument(msg.chat.id, resp, {
+        resp != `404` ?
+            bot.sendDocument(msg.chat.id, resp, {
                 reply_to_message_id: msg.message_id,
-            })
-            : bot.sendMessage(msg.chat.id, `Try using another wallpaper ID`, {
+            }) :
+            bot.sendMessage(msg.chat.id, `Try using another wallpaper ID`, {
                 reply_to_message_id: msg.message_id,
             });
     }
@@ -164,10 +176,9 @@ bot.onText(/\/help/, (msg) => {
             \n\n/random : To get any random image from Wallhaven \
             \n\n/ping : To test the ping of the bot with telegram/google \
             \n\n/getwall <id> : Download the wallpaper using it's id \
-            \n\n/top <1d/3d/1w/1M/3M/6M/1y> : Returns 5 images based on the specified toprange`,
-            {
-                reply_to_message_id: msg.message_id,
-            });
+            \n\n/top <1d/3d/1w/1M/3M/6M/1y> : Returns 5 images based on the specified toprange`, {
+            reply_to_message_id: msg.message_id,
+        });
     }
 });
 
@@ -199,8 +210,7 @@ function init() {
     if (config.TOKEN == undefined || config.API_WALLHAVEN == undefined || config.AUTH_USERS == undefined) {
         console.log(new Error(`\n\nOne or more variables missing in config. Exiting..\n`));
         process.exit(1);
-    }
-    else {
+    } else {
         console.log(`\nBot is up and working! All variables are set.`);
     }
 };
