@@ -29,7 +29,7 @@ const random = async () => {
 };
 
 const nsfw = async () => {
-    let daresponseta = await axios.get(
+    let response = await axios.get(
         `${API_URL}search?sorting=random&purity=001${API_INDEX}`
     );
     let data = await response.data.data[1].path;
@@ -38,7 +38,7 @@ const nsfw = async () => {
 
 const get_wall_using_id = async (query) => {
     let id = query.split(" ");
-    let dresponseata = await axios.get(
+    let response = await axios.get(
         `${WALL_URL}${id}?apikey=${config.API_WALLHAVEN}`
     );
     let data = (await response.data.data) ? response.data.data.path : "404";
@@ -50,7 +50,6 @@ const toplist = async (query) => {
     let response = await axios.get(
         `${API_URL}search?sorting=toplist?toprange=${args}${API_INDEX}`
     );
-    let rawData = await response.data;
     let data = response.data.data.map((obj) => obj.path);
     return data;
 };
