@@ -171,13 +171,9 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await get_wall_using_id(match[1]);
-        resp != `404` ?
-            bot.sendDocument(msg.chat.id, resp, {
-                reply_to_message_id: msg.message_id,
-            }) :
-            bot.sendMessage(msg.chat.id, `Try using another wallpaper ID`, {
-                reply_to_message_id: msg.message_id,
-            });
+        bot.sendDocument(msg.chat.id, resp, {
+            reply_to_message_id: msg.message_id,
+        });
     }
 });
 
