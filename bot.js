@@ -64,8 +64,8 @@ bot.onText(/^\/start/, (msg) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
-        bot.sendMessage(msg.chat.id, `This is a bot based on NodeJS and Wallhaven\'s API!\
-        \nType /help to get a list of available commands.`,
+        bot.sendMessage(msg.chat.id, `Hello there! I am a bot based on NodeJS and Wallhaven\'s API!\
+        \nHit /help to get a list of available commands.`,
             {
                 reply_to_message_id: msg.message_id,
             });
