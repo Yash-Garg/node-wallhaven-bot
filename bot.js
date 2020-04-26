@@ -215,10 +215,6 @@ bot.onText(/\/help/, (msg) => {
 //  F U N C T I O N S
 //
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function isAuthorized(msg) {
     for (var i = 0; i < config.AUTH_USERS.length; i++) {
         if (config.AUTH_USERS[i] == msg.from.id) return 0;
