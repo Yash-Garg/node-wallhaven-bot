@@ -22,9 +22,11 @@ const search = async (query) => {
     );
     let path = await response.data.data[1].path;
     let image = await response.data.data[1].thumbs.small;
+    let surl = await response.data.data[1].short_url;
     return {
         path: path,
         image: image,
+        surl: surl,
     };
 };
 
@@ -34,9 +36,11 @@ const random = async () => {
     );
     let path = await response.data.data[1].path;
     let image = await response.data.data[1].thumbs.small;
+    let surl = await response.data.data[1].short_url;
     return {
         path: path,
         image: image,
+        surl: surl,
     };
 };
 
@@ -46,9 +50,11 @@ const nsfw = async () => {
     );
     let path = await response.data.data[1].path;
     let image = await response.data.data[1].thumbs.small;
+    let surl = await response.data.data[1].short_url;
     return {
         path: path,
         image: image,
+        surl: surl,
     };
 };
 
@@ -107,7 +113,16 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
         const resp = await search(match[1]);
         bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                        text: "View on website",
+                        url: resp.surl,
+                    }]
+                ]
+            }
         });
+        await sleep(3000);
         bot.sendDocument(msg.chat.id, resp.path);
     }
 });
@@ -119,7 +134,16 @@ bot.onText(/\/random/, async (msg) => {
         const resp = await random();
         bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                        text: "View on website",
+                        url: resp.surl,
+                    }]
+                ]
+            }
         });
+        await sleep(3000);
         bot.sendDocument(msg.chat.id, resp.path);
     }
 });
@@ -131,7 +155,16 @@ bot.onText(/\/nsfw/, async (msg) => {
         const resp = await nsfw();
         bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                        text: "View on website",
+                        url: resp.surl,
+                    }]
+                ]
+            }
         });
+        await sleep(3000);
         bot.sendDocument(msg.chat.id, resp.path);
     }
 });
