@@ -159,12 +159,12 @@ bot.onText(/\/help/, (msg) => {
     } else {
         bot.sendMessage(
             msg.chat.id, `/help : To get this message \
-        \n\n/search <keyword> : To get a wallpaper related to the keyword \
-        \n\n/nsfw : To get a random NSFW image from Wallhaven \
-        \n\n/random : To get any random image from Wallhaven \
-        \n\n/ping : To test the ping of the bot with telegram/google \
-        \n\n/getwall <id> : Download the wallpaper using it's id \
-        \n\n/top <1d/3d/1w/1M/3M/6M/1y> : Returns 5 images based on the specified toprange`,
+            \n\n/search <keyword> : To get a wallpaper related to the keyword \
+            \n\n/nsfw : To get a random NSFW image from Wallhaven \
+            \n\n/random : To get any random image from Wallhaven \
+            \n\n/ping : To test the ping of the bot with telegram/google \
+            \n\n/getwall <id> : Download the wallpaper using it's id \
+            \n\n/top <1d/3d/1w/1M/3M/6M/1y> : Returns 5 images based on the specified toprange`,
             {
                 reply_to_message_id: msg.message_id,
             });
