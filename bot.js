@@ -63,8 +63,15 @@ const get_wall_using_id = async (query) => {
     let response = await axios.get(
         `${WALL_URL}${id}?apikey=${config.API_WALLHAVEN}`
     );
-    let data = (await response.data.data) ? response.data.data.path : `404`;
-    return data;
+    let path = response.data.data.path;
+    let image = await response.data.data.thumbs.small;
+    let surl = await response.data.data.short_url;
+    return {
+        path: path,
+        image: image,
+        surl: surl,
+    };
+
 };
 
 const toplist = async (query) => {
@@ -171,9 +178,18 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await get_wall_using_id(match[1]);
-        bot.sendDocument(msg.chat.id, resp, {
+        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
+        bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
-        });
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                        text: "View on website",
+                        url: resp.surl,
+                    }]
+                ]
+            }
+        }).then(sendDoc);
     }
 });
 
