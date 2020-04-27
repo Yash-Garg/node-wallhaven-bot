@@ -21,7 +21,7 @@ const search = async (query) => {
         `${API_URL}${q}&sorting=random&purity=110${API_INDEX}`
     );
     let path = await response.data.data[1].path;
-    let image = await response.data.data[1].thumbs.small;
+    let image = await response.data.data[1].thumbs.large;
     let surl = await response.data.data[1].short_url;
     return {
         path: path,
@@ -35,7 +35,7 @@ const random = async () => {
         `${API_URL}search?sorting=random&purity=110${API_INDEX}`
     );
     let path = await response.data.data[1].path;
-    let image = await response.data.data[1].thumbs.small;
+    let image = await response.data.data[1].thumbs.large;
     let surl = await response.data.data[1].short_url;
     return {
         path: path,
@@ -49,7 +49,7 @@ const nsfw = async () => {
         `${API_URL}search?sorting=random&purity=001${API_INDEX}`
     );
     let path = await response.data.data[1].path;
-    let image = await response.data.data[1].thumbs.small;
+    let image = await response.data.data[1].thumbs.large;
     let surl = await response.data.data[1].short_url;
     return {
         path: path,
@@ -64,7 +64,7 @@ const get_wall_using_id = async (query) => {
         `${WALL_URL}${id}?apikey=${config.API_WALLHAVEN}`
     );
     let path = response.data.data.path;
-    let image = await response.data.data.thumbs.small;
+    let image = await response.data.data.thumbs.large;
     let surl = await response.data.data.short_url;
     return {
         path: path,
