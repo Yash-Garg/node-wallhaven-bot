@@ -30,8 +30,7 @@ const search = async (query) => {
             surl: surl,
             status: "200"
         };
-    }
-    catch (e) {
+    } catch (e) {
         console.log(`Error: No file found for ${args}`);
         return {
             status: "404"
@@ -82,8 +81,7 @@ const get_wall_using_id = async (query) => {
             surl: surl,
             status: "200"
         };
-    }
-    catch (e) {
+    } catch (e) {
         console.log(`Error: No file found for ${id}`);
         return {
             status: "404"
@@ -247,8 +245,8 @@ bot.onText(/\/help/, (msg) => {
             \n\n/ping : To test the ping of the bot with telegram/google \
             \n\n/getwall <id> : Download the wallpaper using it's id \
             \n\n/top <1d/3d/1w/1M/3M/6M/1y> : Returns 5 images based on the specified toprange`, {
-            reply_to_message_id: msg.message_id,
-        });
+                reply_to_message_id: msg.message_id,
+            });
     }
 });
 
