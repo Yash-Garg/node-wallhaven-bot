@@ -118,8 +118,7 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await search(match[1]);
-        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
-        bot.sendPhoto(msg.chat.id, resp.image, {
+        await bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
                 inline_keyboard: [
@@ -129,7 +128,8 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
                     }]
                 ]
             }
-        }).then(sendDoc);
+        });
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
@@ -138,8 +138,7 @@ bot.onText(/\/random/, async (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await random();
-        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
-        bot.sendPhoto(msg.chat.id, resp.image, {
+        await bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
                 inline_keyboard: [
@@ -149,7 +148,8 @@ bot.onText(/\/random/, async (msg) => {
                     }]
                 ]
             }
-        }).then(sendDoc);
+        });
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
@@ -158,8 +158,7 @@ bot.onText(/\/nsfw/, async (msg) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await nsfw();
-        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
-        bot.sendPhoto(msg.chat.id, resp.image, {
+        await bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
                 inline_keyboard: [
@@ -169,7 +168,8 @@ bot.onText(/\/nsfw/, async (msg) => {
                     }]
                 ]
             }
-        }).then(sendDoc);
+        });
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
@@ -178,8 +178,7 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await get_wall_using_id(match[1]);
-        const sendDoc = bot.sendDocument(msg.chat.id, resp.path);
-        bot.sendPhoto(msg.chat.id, resp.image, {
+        await bot.sendPhoto(msg.chat.id, resp.image, {
             reply_to_message_id: msg.message_id,
             reply_markup: {
                 inline_keyboard: [
@@ -189,7 +188,8 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
                     }]
                 ]
             }
-        }).then(sendDoc);
+        });
+		bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
