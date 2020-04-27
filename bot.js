@@ -20,14 +20,20 @@ const search = async (query) => {
     let response = await axios.get(
         `${API_URL}${q}&sorting=random&purity=110${API_INDEX}`
     );
-    let path = await response.data.data[1].path;
-    let image = await response.data.data[1].thumbs.large;
-    let surl = await response.data.data[1].short_url;
-    return {
-        path: path,
-        image: image,
-        surl: surl,
-    };
+    try {
+        let path = await response.data.data[1].path;
+        let image = await response.data.data[1].thumbs.large;
+        let surl = await response.data.data[1].short_url;
+        return {
+            path: path,
+            image: image,
+            surl: surl,
+        };
+    }
+    catch (e) {
+        console.log(`\nError: No file found for ${args}`);
+        status = "404";
+    }
 };
 
 const random = async () => {
@@ -71,7 +77,6 @@ const get_wall_using_id = async (query) => {
         image: image,
         surl: surl,
     };
-
 };
 
 const toplist = async (query) => {
@@ -118,18 +123,24 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await search(match[1]);
-        await bot.sendPhoto(msg.chat.id, resp.image, {
-            reply_to_message_id: msg.message_id,
-            reply_markup: {
-                inline_keyboard: [
-                    [{
-                        text: "View on website",
-                        url: resp.surl,
-                    }]
-                ]
-            }
-        });
-        bot.sendDocument(msg.chat.id, resp.path);
+        if (status != "404") {
+            await bot.sendPhoto(msg.chat.id, resp.image, {
+                reply_to_message_id: msg.message_id,
+                reply_markup: {
+                    inline_keyboard: [
+                        [{
+                            text: "View on website",
+                            url: resp.surl,
+                        }]
+                    ]
+                }
+            });
+            bot.sendDocument(msg.chat.id, resp.path);
+        } else if (status == "404") {
+            bot.sendMessage(msg.chat.id, `Try again with some other keyword(s)`, {
+                reply_to_message_id: msg.message_id,
+            })
+        }
     }
 });
 
@@ -189,7 +200,7 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
                 ]
             }
         });
-		bot.sendDocument(msg.chat.id, resp.path);
+        bot.sendDocument(msg.chat.id, resp.path);
     }
 });
 
