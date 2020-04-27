@@ -32,9 +32,9 @@ const search = async (query) => {
         };
     }
     catch (e) {
-        console.log(`\nError: No file found for ${args}`);
+        console.log(`Error: No file found for ${args}`);
         return {
-            status : "404"
+            status: "404"
         };
     }
 };
@@ -72,14 +72,23 @@ const get_wall_using_id = async (query) => {
     let response = await axios.get(
         `${WALL_URL}${id}?apikey=${config.API_WALLHAVEN}`
     );
-    let path = response.data.data.path;
-    let image = await response.data.data.thumbs.large;
-    let surl = await response.data.data.short_url;
-    return {
-        path: path,
-        image: image,
-        surl: surl,
-    };
+    try {
+        let path = response.data.data.path;
+        let image = await response.data.data.thumbs.large;
+        let surl = await response.data.data.short_url;
+        return {
+            path: path,
+            image: image,
+            surl: surl,
+            status: "200"
+        };
+    }
+    catch (e) {
+        console.log(`Error: No file found for ${id}`);
+        return {
+            status: "404"
+        };
+    }
 };
 
 const toplist = async (query) => {
@@ -192,18 +201,24 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await get_wall_using_id(match[1]);
-        await bot.sendPhoto(msg.chat.id, resp.image, {
-            reply_to_message_id: msg.message_id,
-            reply_markup: {
-                inline_keyboard: [
-                    [{
-                        text: "View on website",
-                        url: resp.surl,
-                    }]
-                ]
-            }
-        });
-        bot.sendDocument(msg.chat.id, resp.path);
+        if (resp.status != "404") {
+            await bot.sendPhoto(msg.chat.id, resp.image, {
+                reply_to_message_id: msg.message_id,
+                reply_markup: {
+                    inline_keyboard: [
+                        [{
+                            text: "View on website",
+                            url: resp.surl,
+                        }]
+                    ]
+                }
+            });
+            bot.sendDocument(msg.chat.id, resp.path);
+        } else {
+            bot.sendMessage(msg.chat.id, `Try again with some other ID`, {
+                reply_to_message_id: msg.message_id,
+            })
+        }
     }
 });
 
