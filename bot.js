@@ -28,11 +28,14 @@ const search = async (query) => {
             path: path,
             image: image,
             surl: surl,
+            status: "200"
         };
     }
     catch (e) {
         console.log(`\nError: No file found for ${args}`);
-        status = "404";
+        return {
+            status : "404"
+        };
     }
 };
 
@@ -123,7 +126,7 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
         sendUnauthorizedMessage(msg);
     } else {
         const resp = await search(match[1]);
-        if (status != "404") {
+        if (resp.status != "404") {
             await bot.sendPhoto(msg.chat.id, resp.image, {
                 reply_to_message_id: msg.message_id,
                 reply_markup: {
@@ -136,7 +139,7 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
                 }
             });
             bot.sendDocument(msg.chat.id, resp.path);
-        } else if (status == "404") {
+        } else {
             bot.sendMessage(msg.chat.id, `Try again with some other keyword(s)`, {
                 reply_to_message_id: msg.message_id,
             })
