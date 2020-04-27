@@ -17,10 +17,10 @@ const WALL_URL = `${API_URL}w/`
 const search = async (query) => {
     let args = query.split(" ");
     let q = "search?q=" + args.join("+");
-    let response = await axios.get(
-        `${API_URL}${q}&sorting=random&purity=110${API_INDEX}`
-    );
     try {
+        let response = await axios.get(
+            `${API_URL}${q}&sorting=random&purity=110${API_INDEX}`
+        );
         let path = await response.data.data[1].path;
         let image = await response.data.data[1].thumbs.large;
         let surl = await response.data.data[1].short_url;
@@ -69,10 +69,10 @@ const nsfw = async () => {
 
 const get_wall_using_id = async (query) => {
     let id = query.split(" ");
-    let response = await axios.get(
-        `${WALL_URL}${id}?apikey=${config.API_WALLHAVEN}`
-    );
     try {
+        let response = await axios.get(
+            `${WALL_URL}${id}?apikey=${config.API_WALLHAVEN}`
+        );
         let path = response.data.data.path;
         let image = await response.data.data.thumbs.large;
         let surl = await response.data.data.short_url;
