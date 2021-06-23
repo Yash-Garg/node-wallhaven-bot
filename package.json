@@ -10,6 +10,6 @@
   "license": "GPL",
   "dependencies": {
     "axios": "^0.19.2",
-    "node-telegram-bot-api": "^0.40.0"
+    "node-telegram-bot-api": "^0.53.0"
   }
 }
