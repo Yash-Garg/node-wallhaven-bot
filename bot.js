@@ -128,7 +128,7 @@ bot.onText(/^\/ping/, (msg) => {
     }
 });
 
-bot.onText(/\/search (.+)/, async (msg, match) => {
+bot.onText(/^\/search (.+)/, async (msg, match) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
@@ -154,7 +154,7 @@ bot.onText(/\/search (.+)/, async (msg, match) => {
     }
 });
 
-bot.onText(/\/random/, async (msg) => {
+bot.onText(/^\/random/, async (msg) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
@@ -174,7 +174,7 @@ bot.onText(/\/random/, async (msg) => {
     }
 });
 
-bot.onText(/\/nsfw/, async (msg) => {
+bot.onText(/^\/nsfw/, async (msg) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
@@ -194,7 +194,7 @@ bot.onText(/\/nsfw/, async (msg) => {
     }
 });
 
-bot.onText(/\/getwall (.+)/, async (msg, match) => {
+bot.onText(/^\/getwall (.+)/, async (msg, match) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
@@ -220,7 +220,7 @@ bot.onText(/\/getwall (.+)/, async (msg, match) => {
     }
 });
 
-bot.onText(/\/top (.+)/, async (msg, match) => {
+bot.onText(/^\/top (.+)/, async (msg, match) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
@@ -233,7 +233,7 @@ bot.onText(/\/top (.+)/, async (msg, match) => {
     }
 });
 
-bot.onText(/\/help/, (msg) => {
+bot.onText(/^\/help/, (msg) => {
     if (isAuthorized(msg) < 0) {
         sendUnauthorizedMessage(msg);
     } else {
